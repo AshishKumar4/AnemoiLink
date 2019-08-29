@@ -317,36 +317,3 @@ void DirectController::beaconRefresh(DirectController *obj)
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 }
-
-/*
-  Sensors APIs 
-*/
-
-int DirectController::startSensorsServer()
-{
-	return 0;
-}
-
-DroneState_t *DirectController::getState()
-{
-	return NULL;
-}
-
-DronePosition_t *DirectController::getPosition()
-{
-	return NULL;
-}
-
-int DirectController::startCameraServer()
-{
-	return 0;
-}
-int *DirectController::getCameraView(int id)
-{
-	return NULL;
-}
-
-int *DirectController::getCameraView(DroneCamera_t *camera)
-{
-	return NULL;
-}

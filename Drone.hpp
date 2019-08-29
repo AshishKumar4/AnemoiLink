@@ -5,6 +5,7 @@
 #include <rpc/client.h>
 
 #include "Controls/DirectControls.hpp"
+#include "Sensors/Sensors.hpp"
 
 class Drone : public DirectController
 {
@@ -12,6 +13,15 @@ class Drone : public DirectController
 
 protected:
 public:
+	GeoPoint_t		*currentPosition;
+	DroneState_t 	*currentState;
+	std::vector<DroneCamera_t*> 		cameras;
+	DroneIMU_t			*imu;
+	DroneGPS_t 			*gps;
+	DroneAltimeter_t 	*altimeter;
+	DroneVelometer_t 	*velometer;
+	DroneStateSensor_t 	*stateSensor;
+
 	Drone(std::string ip = "0.0.0.0", int portBase = 8400);
 
 	/*
@@ -23,6 +33,22 @@ public:
 	int setAltitude(float altitude);
 	int toggleAutoActuator(char type);
 	int gotoLocation(float x, float y, float z);
+
+	/* APIs to get Data */
+	//int startSensorsServer();
+
+	GeoPoint_t		getLocation();
+	DroneState_t 	getState();
+	float 			getTargetDistance();
+	vector3D_t 		getVelocity();
+	vector3D_t 		getGyro();
+	vector3D_t		getAcc();
+	vector3D_t 		getMag();
+	float 			getAltitude();
+	float 			getHeading();
+	image_t 		getCameraView(int id);
+	image_t 		getCameraView(DroneCamera_t *camera);
+
 	/*
         Provide High level Sensor Telemetry
    */

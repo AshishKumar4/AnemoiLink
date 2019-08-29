@@ -45,6 +45,11 @@ void RunningAverage::Reset(double alph)
 ManualController::ManualController(char* portName, Drone* droneObj)
 {
 	this->connectionStatus = 0;
+	if(!strlen(portName))
+	{
+		++this->connectionStatus;
+		return;
+	}
 	this->setUAV(droneObj);
 	// TODO: Add code to Calibrate the Remote data, and add a filter
 	serial = new SerialRX(portName);

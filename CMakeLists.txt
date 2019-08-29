@@ -23,6 +23,7 @@ find_package(Threads REQUIRED)
 set(BASE_SOURCES ./Drone.cpp 
 	./ManualController.cpp
     ./Controls/DirectControls.cpp
+    ./Sensors/rpcSensors.cpp
     ./Indirect/SerialRX.cpp
 )
 

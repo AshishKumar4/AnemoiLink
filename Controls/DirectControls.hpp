@@ -21,11 +21,6 @@ class DirectController
 	int channelBuffs[CHANNEL_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 protected:
-	DronePosition_t *currentPosition;
-	DroneState_t *currentState;
-	std::vector<DroneCamera_t> cameras;
-	DroneIMU_t *imu;
-
 	std::thread *beaconThread;
 
 	void sendCommand(int val, int channel);
@@ -54,13 +49,6 @@ public:
 	static void beaconRefresh(DirectController *obj);
 
 	void printChannels();
-	/* APIs to get Data */
-	int startSensorsServer();
-	DroneState_t *getState();
-	DronePosition_t *getPosition();
-	int startCameraServer();
-	int *getCameraView(int id);
-	int *getCameraView(DroneCamera_t *camera);
 };
 
 #endif
