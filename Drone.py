@@ -61,20 +61,103 @@ class _SwigNonDynamicMeta(type):
     __setattr__ = _swig_setattr_nondynamic_class_variable(type.__setattr__)
 
 
-class DronePosition_t(object):
+class vector3D_t(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
+    x = property(_Drone.vector3D_t_x_get, _Drone.vector3D_t_x_set)
+    y = property(_Drone.vector3D_t_y_get, _Drone.vector3D_t_y_set)
+    z = property(_Drone.vector3D_t_z_get, _Drone.vector3D_t_z_set)
 
-    def __init__(self):
-        _Drone.DronePosition_t_swiginit(self, _Drone.new_DronePosition_t())
-    __swig_destroy__ = _Drone.delete_DronePosition_t
+    def __init__(self, *args):
+        _Drone.vector3D_t_swiginit(self, _Drone.new_vector3D_t(*args))
 
-# Register DronePosition_t in _Drone:
-_Drone.DronePosition_t_swigregister(DronePosition_t)
+    def set(self, xval, yval, zval):
+        return _Drone.vector3D_t_set(self, xval, yval, zval)
+    __swig_destroy__ = _Drone.delete_vector3D_t
+
+# Register vector3D_t in _Drone:
+_Drone.vector3D_t_swigregister(vector3D_t)
+
+class quaternion_t(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    _w = property(_Drone.quaternion_t__w_get, _Drone.quaternion_t__w_set)
+    _x = property(_Drone.quaternion_t__x_get, _Drone.quaternion_t__x_set)
+    _y = property(_Drone.quaternion_t__y_get, _Drone.quaternion_t__y_set)
+    _z = property(_Drone.quaternion_t__z_get, _Drone.quaternion_t__z_set)
+
+    def __init__(self, *args):
+        _Drone.quaternion_t_swiginit(self, _Drone.new_quaternion_t(*args))
+
+    def set(self, w, x, y, z):
+        return _Drone.quaternion_t_set(self, w, x, y, z)
+
+    def w(self):
+        return _Drone.quaternion_t_w(self)
+
+    def x(self):
+        return _Drone.quaternion_t_x(self)
+
+    def y(self):
+        return _Drone.quaternion_t_y(self)
+
+    def z(self):
+        return _Drone.quaternion_t_z(self)
+    __swig_destroy__ = _Drone.delete_quaternion_t
+
+# Register quaternion_t in _Drone:
+_Drone.quaternion_t_swigregister(quaternion_t)
+
+class GeoPoint_t(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    x = property(_Drone.GeoPoint_t_x_get, _Drone.GeoPoint_t_x_set)
+    y = property(_Drone.GeoPoint_t_y_get, _Drone.GeoPoint_t_y_set)
+    z = property(_Drone.GeoPoint_t_z_get, _Drone.GeoPoint_t_z_set)
+
+    def __init__(self, *args):
+        _Drone.GeoPoint_t_swiginit(self, _Drone.new_GeoPoint_t(*args))
+
+    def set(self, *args):
+        return _Drone.GeoPoint_t_set(self, *args)
+    __swig_destroy__ = _Drone.delete_GeoPoint_t
+
+# Register GeoPoint_t in _Drone:
+_Drone.GeoPoint_t_swigregister(GeoPoint_t)
+
+class data_imu_t(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+    acc = property(_Drone.data_imu_t_acc_get, _Drone.data_imu_t_acc_set)
+    gyro = property(_Drone.data_imu_t_gyro_get, _Drone.data_imu_t_gyro_set)
+    mag = property(_Drone.data_imu_t_mag_get, _Drone.data_imu_t_mag_set)
+    __swig_destroy__ = _Drone.delete_data_imu_t
+
+# Register data_imu_t in _Drone:
+_Drone.data_imu_t_swigregister(data_imu_t)
+
+class image_t(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+    buff = property(_Drone.image_t_buff_get, _Drone.image_t_buff_set)
+    __swig_destroy__ = _Drone.delete_image_t
+
+# Register image_t in _Drone:
+_Drone.image_t_swigregister(image_t)
 
 class DroneState_t(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
+    imu = property(_Drone.DroneState_t_imu_get, _Drone.DroneState_t_imu_set)
+    vel = property(_Drone.DroneState_t_vel_get, _Drone.DroneState_t_vel_set)
+    altitude = property(_Drone.DroneState_t_altitude_get, _Drone.DroneState_t_altitude_set)
+    heading = property(_Drone.DroneState_t_heading_get, _Drone.DroneState_t_heading_set)
 
     def __init__(self):
         _Drone.DroneState_t_swiginit(self, _Drone.new_DroneState_t())
@@ -83,42 +166,27 @@ class DroneState_t(object):
 # Register DroneState_t in _Drone:
 _Drone.DroneState_t_swigregister(DroneState_t)
 
-class DroneSensors_t(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
 
-    def __init__(self):
-        _Drone.DroneSensors_t_swiginit(self, _Drone.new_DroneSensors_t())
-    __swig_destroy__ = _Drone.delete_DroneSensors_t
+def clamp(val, imin, imax, omin, omax):
+    return _Drone.clamp(val, imin, imax, omin, omax)
+PI = _Drone.PI
+CONST_PIby180 = _Drone.CONST_PIby180
+CONST_180byPI = _Drone.CONST_180byPI
 
-# Register DroneSensors_t in _Drone:
-_Drone.DroneSensors_t_swigregister(DroneSensors_t)
+def degreesToRads(degree):
+    return _Drone.degreesToRads(degree)
 
-class DroneCamera_t(DroneSensors_t):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
+def radsToDegrees(degree):
+    return _Drone.radsToDegrees(degree)
 
-    def __init__(self):
-        _Drone.DroneCamera_t_swiginit(self, _Drone.new_DroneCamera_t())
+def getConventionalDegrees(rads):
+    return _Drone.getConventionalDegrees(rads)
 
-    def getDisparity(self, cam1, cam2):
-        return _Drone.DroneCamera_t_getDisparity(self, cam1, cam2)
-    __swig_destroy__ = _Drone.delete_DroneCamera_t
+def circularToSignAngle(angle):
+    return _Drone.circularToSignAngle(angle)
 
-# Register DroneCamera_t in _Drone:
-_Drone.DroneCamera_t_swigregister(DroneCamera_t)
-
-class DroneIMU_t(DroneSensors_t):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self):
-        _Drone.DroneIMU_t_swiginit(self, _Drone.new_DroneIMU_t())
-    __swig_destroy__ = _Drone.delete_DroneIMU_t
-
-# Register DroneIMU_t in _Drone:
-_Drone.DroneIMU_t_swigregister(DroneIMU_t)
-
+def eulerFromQuaternion(orien):
+    return _Drone.eulerFromQuaternion(orien)
 CHANNEL_COUNT = _Drone.CHANNEL_COUNT
 class DirectController(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -173,21 +241,6 @@ class DirectController(object):
     def printChannels(self):
         return _Drone.DirectController_printChannels(self)
 
-    def startSensorsServer(self):
-        return _Drone.DirectController_startSensorsServer(self)
-
-    def getState(self):
-        return _Drone.DirectController_getState(self)
-
-    def getPosition(self):
-        return _Drone.DirectController_getPosition(self)
-
-    def startCameraServer(self):
-        return _Drone.DirectController_startCameraServer(self)
-
-    def getCameraView(self, *args):
-        return _Drone.DirectController_getCameraView(self, *args)
-
 # Register DirectController in _Drone:
 _Drone.DirectController_swigregister(DirectController)
 
@@ -197,6 +250,14 @@ def DirectController_beaconRefresh(obj):
 class Drone(DirectController):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
+    currentPosition = property(_Drone.Drone_currentPosition_get, _Drone.Drone_currentPosition_set)
+    currentState = property(_Drone.Drone_currentState_get, _Drone.Drone_currentState_set)
+    cameras = property(_Drone.Drone_cameras_get, _Drone.Drone_cameras_set)
+    imu = property(_Drone.Drone_imu_get, _Drone.Drone_imu_set)
+    gps = property(_Drone.Drone_gps_get, _Drone.Drone_gps_set)
+    altimeter = property(_Drone.Drone_altimeter_get, _Drone.Drone_altimeter_set)
+    velometer = property(_Drone.Drone_velometer_get, _Drone.Drone_velometer_set)
+    stateSensor = property(_Drone.Drone_stateSensor_get, _Drone.Drone_stateSensor_set)
 
     def __init__(self, *args):
         _Drone.Drone_swiginit(self, _Drone.new_Drone(*args))
@@ -218,6 +279,36 @@ class Drone(DirectController):
 
     def gotoLocation(self, x, y, z):
         return _Drone.Drone_gotoLocation(self, x, y, z)
+
+    def getLocation(self):
+        return _Drone.Drone_getLocation(self)
+
+    def getState(self):
+        return _Drone.Drone_getState(self)
+
+    def getTargetDistance(self):
+        return _Drone.Drone_getTargetDistance(self)
+
+    def getVelocity(self):
+        return _Drone.Drone_getVelocity(self)
+
+    def getGyro(self):
+        return _Drone.Drone_getGyro(self)
+
+    def getAcc(self):
+        return _Drone.Drone_getAcc(self)
+
+    def getMag(self):
+        return _Drone.Drone_getMag(self)
+
+    def getAltitude(self):
+        return _Drone.Drone_getAltitude(self)
+
+    def getHeading(self):
+        return _Drone.Drone_getHeading(self)
+
+    def getCameraView(self, *args):
+        return _Drone.Drone_getCameraView(self, *args)
     __swig_destroy__ = _Drone.delete_Drone
 
 # Register Drone in _Drone:

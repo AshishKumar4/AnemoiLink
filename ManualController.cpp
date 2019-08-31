@@ -21,6 +21,8 @@
 
 #include "ManualController.hpp"
 
+int show_channels = 0;
+
 RunningAverage::RunningAverage(int blength, int seed, double alph)
 {
 	for (int j = 0; j < blength; j++)
@@ -266,7 +268,7 @@ void ManualController::ExecutorSerial()
 		/*uavObject->setAux3(a2_val);
             uavObject->setAux4(a2_val);*/
 		//std::cout<<"Help!";
-		if (show_debug)
+		if (show_channels)
 			uavObject->printChannels();
 		std::this_thread::sleep_for(std::chrono::microseconds(1000));
 	}
@@ -357,3 +359,14 @@ void ManualController::ResumeExecutor()
 {
 	ExecutionHold = false;
 }
+
+void ManualController::showChannels()
+{
+	show_channels = true;
+}
+
+void ManualController::hideChannels()
+{
+	show_channels = false;
+}
+

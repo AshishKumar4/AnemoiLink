@@ -4,8 +4,18 @@
 
 #include "ManualController.hpp"
 #include "Drone.hpp"
+#include "Sensors/Sensors.hpp"
 
 using namespace std;
+
+float volatile 	delay_dump = 0;
+typedef int 	(*func_t)(ManualController *); // function pointer
+typedef int 	(*func_i_t)(int);			   // function pointer
+
+int 	channel_select = 0;
+int 	incVal[2] = {15, 130};
+int 	PID_Controls[3][3] = {{26, 26 * 2, 26 * 3}, {26 * 4, 26 * 5, 26 * 6}, {26 * 7, 26 * 8, 26 * 9}};
+		//{{1100, 1200, 1300}, {1400, 1500, 1600}, {1700, 1800, 1900}};
 
 int event_keyPlus(ManualController *obj)
 {
@@ -67,12 +77,20 @@ int event_key_3(ManualController *obj)
 	return 2;
 }
 
+int show_debug = 0;
+
 int event_key_q(ManualController *obj)
 {
 	if (show_debug)
+	{
+		obj->hideChannels();
 		show_debug = 0;
+	}
 	else
+	{
+		obj->showChannels();
 		show_debug = 1;
+	}
 	return 1;
 }
 
@@ -204,7 +222,7 @@ int KeyBindings_thread(ManualController *obj)
 
 int main(int argc, char **argv)
 {
-	char *serialport = (char*)"/dev/ttyUSB0";
+	char *serialport = (char *)"/dev/ttyUSB0";
 	Drone *droneControl;
 	if (argc == 1)
 		droneControl = new Drone("0.0.0.0");
@@ -217,9 +235,9 @@ int main(int argc, char **argv)
 		droneControl = new Drone(argv[1], atoi(argv[2]));
 		serialport = argv[3];
 	}
-	if(droneControl == nullptr || droneControl->connectionStatus)
+	if (droneControl == nullptr || droneControl->connectionStatus)
 	{
-		cout<<"\nConnection to the UAV could not be established, Terminating...";
+		cout << "\nConnection to the UAV could not be established, Terminating...";
 		exit(1);
 	}
 
@@ -255,7 +273,7 @@ int main(int argc, char **argv)
 	KeyMap['S'] = event_key_S;
 	KeyMap['\n'] = event_key_enter;
 	KeyMap['\r'] = event_key_enter;
-	ManualController remote(droneControl, serialport);
+	ManualController remote(serialport, droneControl);
 	thread KeyBindings(KeyBindings_thread, &remote);
 	//ManualController remote(droneControl, "/dev/ttyUSB0");
 	remote.ExecutorSerial();

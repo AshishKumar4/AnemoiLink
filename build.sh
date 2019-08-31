@@ -23,4 +23,6 @@ fi
 cd build
 make
 
+cp libDrone.so /usr/lib/libDrone.so
+
 echo "Compilation Completed!\n"

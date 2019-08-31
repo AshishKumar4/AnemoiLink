@@ -6,6 +6,7 @@
 #include "Drone.hpp"
 
 #include "Controls/DirectControls.hpp"
+#include "Sensors/Sensors.hpp"
 
 Drone::Drone(std::string ip, int portBase) : DirectController(ip, portBase)
 {
@@ -18,7 +19,8 @@ Drone::Drone(std::string ip, int portBase) : DirectController(ip, portBase)
 	// PortBase - 1 port would be for RPC channel
 	rpcStub = new rpc::client(ip, portBase - 1);
 
-	imu = new DroneIMU_t(new RPCSensorBackend<data_imu_t>(rpcStub));
+	SensorBackend<data_imu_t>* backDesc = new RPCSensorBackend<data_imu_t>(rpcStub);
+	imu = new DroneIMU_t(backDesc);
 	gps = new DroneGPS_t(new RPCSensorBackend<GeoPoint_t>(rpcStub));
 	altimeter = new DroneAltimeter_t(new RPCSensorBackend<float>(rpcStub));
 	velometer = new DroneVelometer_t(new RPCSensorBackend<vector3D_t>(rpcStub));

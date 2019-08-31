@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef MANUALCONTROLLER_H
+#define MANUALCONTROLLER_H
+
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/socket.h>
@@ -30,8 +34,6 @@
 
 #define SHOW_RC_COMMAND
 
-float volatile delay_dump = 0;
-
 using namespace std;
 
 /*
@@ -51,8 +53,6 @@ public:
 	double ExpFilter(double valIn);
 	void Reset(double alph);
 };
-
-int show_debug = 0;
 
 class ManualController
 {
@@ -113,15 +113,11 @@ public:
 	int filter(int val, int channel);
 	void StopExecutor();
 	void ResumeExecutor();
+	void showChannels();
+	void hideChannels();
 
 	//int test123();
 	//int testCode(std::string str);
 };
 
-typedef int (*func_t)(ManualController *); // function pointer
-typedef int (*func_i_t)(int);			   // function pointer
-
-int channel_select = 0;
-int incVal[2] = {15, 130};
-int PID_Controls[3][3] = {{26, 26 * 2, 26 * 3}, {26 * 4, 26 * 5, 26 * 6}, {26 * 7, 26 * 8, 26 * 9}};
-//{{1100, 1200, 1300}, {1400, 1500, 1600}, {1700, 1800, 1900}};
+#endif
