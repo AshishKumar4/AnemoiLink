@@ -61,6 +61,21 @@ int Drone::gotoLocation(float x, float y, float z)
 	return rpcStub->call("gotoLocation", x, y, z).as<int>();
 }
 
+int Drone::addWaypoint(float x, float y, float z)
+{
+	return rpcStub->call("addWaypoint", x, y, z).as<int>();
+}
+
+int Drone::enableAutoNav()
+{
+	return rpcStub->call("enableAutoNav").as<int>();
+}
+
+int Drone::disableAutoNav()
+{
+	return rpcStub->call("disableAutoNav").as<int>();
+}
+
 GeoPoint_t Drone::getLocation()
 {
 	return gps->fetchData();

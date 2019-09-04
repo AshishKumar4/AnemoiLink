@@ -33,6 +33,10 @@ public:
 	int setAltitude(float altitude);
 	int toggleAutoActuator(char type);
 	int gotoLocation(float x, float y, float z);
+	int addWaypoint(float x, float y, float z);
+
+	int enableAutoNav();
+	int disableAutoNav();
 
 	/* APIs to get Data */
 	//int startSensorsServer();
