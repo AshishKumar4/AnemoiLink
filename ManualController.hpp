@@ -16,6 +16,7 @@
 #include <sstream>
 #include <fstream>
 #include <thread> // std::thread
+#include <future>
 
 #include "Drone.hpp"
 #include "Controls/DirectControls.hpp"
@@ -83,6 +84,8 @@ class ManualController
 
 	vector<RunningAverage *> channelFilters;
 
+	thread* executorThread;
+
 	SerialRX *serial;
 
 protected:
@@ -108,13 +111,15 @@ public:
 
 	void CalibrateController();
 
-	void ExecutorSerial();
+	static void ExecutorSerial(ManualController* obj);
 	void parseSerialData_syncd(int sz, int scn_max);
 	int filter(int val, int channel);
 	void StopExecutor();
 	void ResumeExecutor();
 	void showChannels();
 	void hideChannels();
+
+	void launchExecutor();
 
 	//int test123();
 	//int testCode(std::string str);

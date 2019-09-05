@@ -68,12 +68,18 @@ int Drone::addWaypoint(float x, float y, float z)
 
 int Drone::enableAutoNav()
 {
+	printf("\nSent Command... ");
 	return rpcStub->call("enableAutoNav").as<int>();
 }
 
 int Drone::disableAutoNav()
 {
 	return rpcStub->call("disableAutoNav").as<int>();
+}
+
+int Drone::getCurrentPath()
+{
+	return rpcStub->call("getCurrentPath").as<int>();
 }
 
 GeoPoint_t Drone::getLocation()

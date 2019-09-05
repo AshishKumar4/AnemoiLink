@@ -53,6 +53,8 @@ public:
 	image_t 		getCameraView(int id);
 	image_t 		getCameraView(DroneCamera_t *camera);
 
+	int 			getCurrentPath();
+
 	/*
         Provide High level Sensor Telemetry
    */

@@ -14,6 +14,7 @@
 #include <thread> // std::thread
 #include <algorithm>
 #include <sys/stat.h>
+#include <future>
 
 #include "Drone.hpp"
 #include "Controls/DirectControls.hpp"
@@ -238,9 +239,13 @@ void ManualController::CalibrateController()
 	/************************************************************************************************************/
 }
 
-void ManualController::ExecutorSerial()
+void ManualController::ExecutorSerial(ManualController* obj)
 {
-	if(!this->uavObject) return;
+	if(!obj->uavObject)
+	{
+		printf("\nNo uav obj found!");
+		return;
+	}
 	int jj = 0;
 	int sz = 90;
 	int scn_max = 1; //(sz / 30); // We would discard sections of data from start and end, for sanity
@@ -248,28 +253,29 @@ void ManualController::ExecutorSerial()
 	// and filter it and send it over to the API layer for Controller, to control the drone.
 
 	//serial->openSerial();
+	printf("\nExecuting...");
 	while (1)
 	{
-		if (ExecutionHold)
+		if (obj->ExecutionHold)
 		{
 			std::this_thread::sleep_for(std::chrono::microseconds(1000));
 			continue;
 		}
-		parseSerialData_syncd(sz, scn_max);
+		obj->parseSerialData_syncd(sz, scn_max);
 
-		uavObject->setThrottle(filter(t_val, THROTTLE)); // (double(t_val - t_min) * t_factor)));
-		uavObject->setYaw(filter(y_val, YAW));			 //(double(y_val - y_min) * y_factor)));
-		uavObject->setPitch(filter(p_val, PITCH));		 // Reversed Pitch     //(double(p_val - p_min) * p_factor)));
-		uavObject->setRoll(255 - filter(r_val, ROLL));   // Reversed Roll       //(double(r_val - r_min) * r_factor)));
-		uavObject->setAux(1, a1_val);
-		uavObject->setAux(2, a2_val);
-		uavObject->setAux(3, a3_val);
-		uavObject->setAux(4, a4_val);
+		obj->uavObject->setThrottle(obj->filter(obj->t_val, THROTTLE)); // (double(t_val - t_min) * t_factor)));
+		obj->uavObject->setYaw(obj->filter(obj->y_val, YAW));			 //(double(y_val - y_min) * y_factor)));
+		obj->uavObject->setPitch(obj->filter(obj->p_val, PITCH));		 // Reversed Pitch     //(double(p_val - p_min) * p_factor)));
+		obj->uavObject->setRoll(255 - obj->filter(obj->r_val, ROLL));   // Reversed Roll       //(double(r_val - r_min) * r_factor)));
+		obj->uavObject->setAux(1, obj->a1_val);
+		obj->uavObject->setAux(2, obj->a2_val);
+		obj->uavObject->setAux(3, obj->a3_val);
+		obj->uavObject->setAux(4, obj->a4_val);
 		/*uavObject->setAux3(a2_val);
             uavObject->setAux4(a2_val);*/
 		//std::cout<<"Help!";
 		if (show_channels)
-			uavObject->printChannels();
+			obj->uavObject->printChannels();
 		std::this_thread::sleep_for(std::chrono::microseconds(1000));
 	}
 	//serial->closeSerial();
@@ -370,3 +376,8 @@ void ManualController::hideChannels()
 	show_channels = false;
 }
 
+void ManualController::launchExecutor()
+{
+	this->executorThread = new std::thread(ManualController::ExecutorSerial, this);
+	//auto t = std::async(std::launch::async, &ManualController::ExecutorSerial, this);
+}
