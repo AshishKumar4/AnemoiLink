@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <poll.h>
 
 #include <string>
 #include <iostream>
@@ -77,14 +78,18 @@ void DirectController::InitSequence()
 			printf("Handshake Successfull, Connection Established!\n");
 		}
 		beaconThread = new thread(this->beaconRefresh, this);
+		//beaconListenerThread = new thread(this->beaconListener, this);
 		disarm();
 		balance();
 		disarm();
 		cout << "UAV Initialization Sequence Completed...\n";
+		fflush(stdout);
+		this->connectionStatus = 0;
 	}
 	catch (...)
 	{
 		++this->connectionStatus;
+		fflush(stdout);
 		cout << "UAV Initialization Sequence Failed...\n";
 	}
 }
@@ -93,12 +98,14 @@ DirectController::DirectController(std::string ip, int portBase)
 {
 	this->connectionStatus = 0;
 	int status = 1;
-#if defined(STREAM_PROTOCOL_3) // For Protocol 3, We have only one channel for tx, 1 for rapi, 1 for beacon
+#if defined(STREAM_PROTOCOL_3) // For Protocol 3, We have only one channel for tx, 1 for becon send, 1 for beacon recieve
 	if (ConnectChannel(ip, portBase, 0))
 		++this->connectionStatus; // for Rx
 	//ConnectChannel(ip, portBase + 1, 1); // RAPI_INVOKER
-	if (ConnectChannel(ip, portBase + 1, 2))
-		++this->connectionStatus; // Beacon
+	if (ConnectChannel(ip, portBase + 1, 1))
+		++this->connectionStatus; // Beacon Sender
+								  // if (ConnectChannel(ip, portBase + 2, 2))
+								  // 	++this->connectionStatus; // Beacon Reciever
 #else
 	ConnectChannel(ip, portBase + 0, 0); //PORT_THROTTLE
 	ConnectChannel(ip, portBase + 1, 1); //PORT_PITCH
@@ -110,6 +117,8 @@ DirectController::DirectController(std::string ip, int portBase)
 	ConnectChannel(ip, portBase + 7, 7); //PORT_AUX4
 	ConnectChannel(ip, portBase + 8, 8); //RAPI_INVOKER
 #endif
+	printf("\n{%d}\n", this->connectionStatus);
+	fflush(stdout);
 	if (this->connectionStatus)
 		return;
 	InitSequence();
@@ -304,6 +313,8 @@ void DirectController::setAux(int channel, int val)
   Beacon, send data at every 50ms
 */
 
+char beaconBuffer[100];
+
 void DirectController::beaconRefresh(DirectController *obj)
 {
 	const char *bmsg = "still alive\0";
@@ -312,8 +323,63 @@ void DirectController::beaconRefresh(DirectController *obj)
 		while (obj->beaconLock)
 			;
 		obj->beaconLock = 1;
-		send(obj->server_fd[1], bmsg, strlen(bmsg), 0);
+		// Send Beacon
+		if (send(obj->server_fd[1], bmsg, strlen(bmsg), 0) == -1)
+		{
+			printf("\nConnection Broken!");
+			fflush(stdout);
+			obj->connectionStatus = 6;
+			obj->beaconLock = 0;
+			return;
+		}
 		obj->beaconLock = 0;
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	}
+}
+
+void DirectController::beaconListener(DirectController *obj)
+{
+	const char *bmsg = "Yes\0";
+	struct pollfd ffd;
+	int ret;
+	while (1)
+	{
+		try
+		{
+			// Wait for Beacon Reply
+			ffd.fd = obj->server_fd[2]; // your socket handler
+			ffd.events = POLLIN;
+			ret = poll(&ffd, 1, 100); // 100ms for timeout
+			switch (ret)
+			{
+			case -1:
+				// Error
+				throw "Error!";
+				break;
+			case 0:
+				// Timeout
+				printf("\nTimeout!!! Reciever data not recieved in desired time...");
+				obj->connectionStatus = 5;
+				return;
+				break;
+			default:
+				memset(beaconBuffer, 0, 100);
+				recv(obj->server_fd[2], beaconBuffer, 100, 0); // get your data
+				if (strcmp(beaconBuffer, bmsg))
+				{
+					printf("Got reply (%s)", bmsg);
+					obj->connectionStatus = 5;
+				}
+				//printf("\n%s", ControlChannelBuffer[i]);
+				break;
+			}
+		}
+		catch (...)
+		{
+			printf("\nConnection Lost!");
+			return;
+			obj->connectionStatus = 5;
+		}
+		//std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 }

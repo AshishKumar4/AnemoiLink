@@ -56,14 +56,14 @@ int Drone::toggleAutoActuator(char type)
 	return rpcStub->call("toggleAutoActuator", type).as<int>();
 }
 
-int Drone::gotoLocation(float x, float y, float z)
+int Drone::gotoLocation(float x, float y, float z, float cruise_velocity)
 {
-	return rpcStub->call("gotoLocation", x, y, z).as<int>();
+	return rpcStub->call("gotoLocation", x, y, z, cruise_velocity).as<int>();
 }
 
-int Drone::addWaypoint(float x, float y, float z)
+int Drone::addWaypoint(float x, float y, float z, float cruise_velocity)
 {
-	return rpcStub->call("addWaypoint", x, y, z).as<int>();
+	return rpcStub->call("addWaypoint", x, y, z, cruise_velocity).as<int>();
 }
 
 int Drone::enableAutoNav()

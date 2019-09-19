@@ -32,8 +32,8 @@ public:
 	int setPitchAngle(float angle);
 	int setAltitude(float altitude);
 	int toggleAutoActuator(char type);
-	int gotoLocation(float x, float y, float z);
-	int addWaypoint(float x, float y, float z);
+	int gotoLocation(float x, float y, float z, float cruise_velocity = 15);
+	int addWaypoint(float x, float y, float z, float cruise_velocity = 15);
 
 	int enableAutoNav();
 	int disableAutoNav();

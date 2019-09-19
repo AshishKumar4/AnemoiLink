@@ -33,6 +33,6 @@ set(CMAKE_C_FLAGS "-O2 -fpic")
 add_library(${PROJECT_NAME} SHARED ${BASE_SOURCES})
 #add_executable(${PROJECT_NAME} ${BASE_SOURCES})
 target_link_libraries(${PROJECT_NAME} Threads::Threads)
-#target_link_libraries(${PROJECT_NAME} rpc)
+target_link_libraries(${PROJECT_NAME} rpc)
 
 #install(TARGETS $(PROJECT_NAME) DESTINATION lib)

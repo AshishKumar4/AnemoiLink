@@ -12,6 +12,7 @@
 #define CHANNEL_COUNT 9
 
 #include "../common.h"
+#include <unistd.h>
 
 class DirectController
 {
@@ -22,6 +23,7 @@ class DirectController
 
 protected:
 	std::thread *beaconThread;
+	std::thread *beaconListenerThread;
 
 	void sendCommand(int val, int channel);
 
@@ -47,6 +49,15 @@ public:
 	void setRoll(int val);
 	void setAux(int channel, int val);
 	static void beaconRefresh(DirectController *obj);
+	static void beaconListener(DirectController *obj);
+
+	void closeConnections()
+	{
+		for(auto i : server_fd)
+		{
+			close(i);
+		}
+	}
 
 	void printChannels();
 };
